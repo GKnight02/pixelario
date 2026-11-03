@@ -4,18 +4,13 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { CHAPTERS } from "@/lib/constants";
 import { buttonClasses } from "../pixel/pixel-button";
 import { PixelIcon } from "../pixel/pixel-icon";
 import { Candle } from "../pixel/candle";
 
-export interface ChapterLink {
-  slug: string; // "" = portada
-  title: string;
-  short: string;
-  icon: string;
-  count?: number;
-}
+import type { ChapterLink } from "./chapter-links";
+
+export type { ChapterLink } from "./chapter-links";
 
 function subscribeMq(cb: () => void) {
   const mq = window.matchMedia("(min-width: 1024px)");
@@ -29,13 +24,6 @@ function useIsDesktop() {
     () => window.matchMedia("(min-width: 1024px)").matches,
     () => true,
   );
-}
-
-export function chapterLinks(counts?: Partial<Record<string, number>>): ChapterLink[] {
-  return [
-    { slug: "", title: "Portada", short: "Portada", icon: "books" },
-    ...CHAPTERS.map((c) => ({ slug: c.slug, title: c.title, short: c.short, icon: c.icon, count: counts?.[c.key] })),
-  ];
 }
 
 export function ChapterIndex({

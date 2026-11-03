@@ -1,6 +1,7 @@
 import { Cover } from "@/components/book/cover";
 import { CoverActions } from "@/components/book/cover-actions";
-import { ChapterIndex, chapterLinks } from "@/components/book/book-shell";
+import { ChapterIndex } from "@/components/book/book-shell";
+import { chapterLinks } from "@/components/book/chapter-links";
 import { dateTypeLabel } from "@/lib/constants";
 import { countdownText } from "@/lib/dates";
 import { getBook } from "@/lib/data";

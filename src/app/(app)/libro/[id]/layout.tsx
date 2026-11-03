@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthorBook } from "@/components/book/author-book";
-import { chapterLinks } from "@/components/book/book-shell";
+import { chapterLinks } from "@/components/book/chapter-links";
 import { PixelIcon } from "@/components/pixel/pixel-icon";
 import { getBook } from "@/lib/data";
 
