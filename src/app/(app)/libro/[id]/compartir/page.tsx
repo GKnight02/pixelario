@@ -20,7 +20,7 @@ export default async function SharePage({ params }: PageProps<"/libro/[id]/compa
       <Link href={`/libro/${person.id}`} className="mb-4 flex w-fit items-center gap-2 text-sm hover:underline">
         <PixelIcon name="left" scale={1.5} /> Volver al libro
       </Link>
-      <h1 className="mb-5 flex items-center gap-2 text-sm">
+      <h1 className="mb-6 flex items-center gap-3 text-[2.6rem]">
         <PixelIcon name="share" scale={2.5} /> Compartir el libro de {person.name}
       </h1>
       <SharePanel

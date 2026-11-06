@@ -1,6 +1,7 @@
+import { Azulejo, AzulejoField } from "../pixel/azulejo";
 import { PixelIcon } from "../pixel/pixel-icon";
 
-const CONFETTI_COLORS = ["#E0A030", "#B04A5A", "#5A8F4E", "#3E6E8E", "#F4E4C1", "#8E7CC3"];
+const CONFETTI_COLORS = ["#E8A31A", "#1D3A9E", "#2F8A4E", "#B8432F", "#F2F5FB", "#5B4BA0"];
 
 export function Confetti() {
   return (
@@ -24,7 +25,10 @@ export function Confetti() {
   );
 }
 
-/** Portada del libro (la usan el autor y el visitante). */
+/**
+ * Portada del libro (la usan el autor y el visitante): el azulejo de la persona
+ * repetido como paño, con una cartela de esmalte al centro.
+ */
 export function Cover({
   name,
   nickname,
@@ -47,44 +51,44 @@ export function Cover({
   author?: string | null;
 }) {
   return (
-    <div
-      className="pixel-border relative mx-auto flex w-full max-w-md flex-col items-center gap-4 overflow-hidden px-6 py-8 text-center text-[#fdf6e3]"
-      style={{ background: coverColor }}
-    >
+    <div className="pixel-border relative mx-auto w-full max-w-md overflow-hidden" style={{ background: coverColor }}>
+      <AzulejoField seed={name} color={coverColor} tile={48} className="absolute inset-0" />
       {birthdayToday ? <Confetti /> : null}
-      {/* marco dorado pixel */}
-      <div aria-hidden className="pointer-events-none absolute inset-2 border-2 border-dashed border-[#e0a030]/70" />
 
-      <p className="font-title text-[0.55rem] tracking-widest opacity-85">El libro de</p>
-      <div className="h-32 w-32 border-4 border-[#2a1a10] bg-[#f4e4c1] shadow-[4px_4px_0_0_rgba(0,0,0,0.5)]">
-        {avatarUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={avatarUrl} alt={`Avatar de ${name}`} className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-[#8b3a3a]">
-            <PixelIcon name="heart" scale={7} />
-          </div>
-        )}
+      <div className="relative m-6 flex flex-col items-center gap-4 border-[3px] border-cobalt-deep bg-glaze px-6 py-8 text-center sm:m-8">
+        <div className="h-32 w-32 border-[3px] border-cobalt-deep bg-glaze-2 shadow-[4px_4px_0_0_var(--shadow)]">
+          {avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={avatarUrl} alt={`Avatar de ${name}`} className="h-full w-full object-cover" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <Azulejo seed={name} color={coverColor} size={96} framed={false} />
+            </div>
+          )}
+        </div>
+        <h1 className="flex flex-col leading-none wrap-break-word">
+          <span className="text-[1.5rem] text-cobalt">El libro de</span>
+          <span className="text-[2.6rem] sm:text-[3rem]">{name}</span>
+        </h1>
+        {nickname ? <p className="-mt-2 text-lg text-ink-soft">“{nickname}”</p> : null}
+        <p className="bg-cobalt px-3 py-1 font-title text-[0.55rem] text-on-cobalt">{relationship}</p>
+        {tagline ? <p className="max-w-xs text-lg">{tagline}</p> : null}
+
+        {birthdayToday ? (
+          <p className="pixel-border-sm bg-ochre px-3 py-2 font-title text-[0.6rem] text-on-ochre">
+            ¡Hoy es su cumpleaños!
+          </p>
+        ) : countdown ? (
+          <p className="flex items-center gap-2 border-t-2 border-dashed border-grout pt-3 text-ink">
+            <PixelIcon name="cake" scale={2} className="text-cobalt" />
+            <span>
+              {countdown.label}: <strong>{countdown.text}</strong>
+            </span>
+          </p>
+        ) : null}
+
+        {author ? <p className="text-sm text-ink-soft">Escrito por {author}</p> : null}
       </div>
-      <h1 className="text-base leading-relaxed wrap-break-word sm:text-lg">{name}</h1>
-      {nickname ? <p className="-mt-2 text-lg">“{nickname}”</p> : null}
-      <p className="border-2 border-[#fdf6e3]/70 px-3 py-0.5 text-sm capitalize">{relationship}</p>
-      {tagline ? <p className="max-w-xs text-lg italic">{tagline}</p> : null}
-
-      {birthdayToday ? (
-        <p className="pixel-border-sm bg-accent px-3 py-2 font-title text-[0.6rem] text-[#2a1a10]">
-          ¡Hoy es su cumpleaños!
-        </p>
-      ) : countdown ? (
-        <p className="flex items-center gap-2 bg-[#2a1a10]/30 px-3 py-1.5">
-          <PixelIcon name="cake" scale={2} />
-          <span>
-            {countdown.label}: <strong>{countdown.text}</strong>
-          </span>
-        </p>
-      ) : null}
-
-      {author ? <p className="text-sm opacity-80">Escrito por {author}</p> : null}
     </div>
   );
 }

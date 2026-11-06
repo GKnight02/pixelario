@@ -5,7 +5,7 @@ export function PixelCard({
   ...props
 }: React.HTMLAttributes<HTMLElement> & { as?: "div" | "section" | "article" | "li" }) {
   return (
-    <Tag className={`pixel-border paper p-4 ${className}`} {...props}>
+    <Tag className={`pixel-border bg-paper p-5 ${className}`} {...props}>
       {children}
     </Tag>
   );

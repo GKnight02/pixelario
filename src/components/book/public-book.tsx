@@ -43,7 +43,7 @@ export function PublicBookView({ book, now }: { book: PublicBook; now: string })
             author={book.author}
           />
           <section className="lg:hidden" aria-labelledby="indice">
-            <h2 id="indice" className="mb-2 text-[0.7rem]">
+            <h2 id="indice" className="mb-3 text-[2rem]">
               Índice
             </h2>
             <ChapterIndex chapters={chapters.slice(1)} current="" onSelect={setCurrent} />

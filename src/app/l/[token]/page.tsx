@@ -32,7 +32,7 @@ function ClosedBook({ text }: { text: string }) {
       <div className="pixel-border flex h-56 w-40 items-end justify-center bg-cover pb-4">
         <Sprite animal="cat" state="special" scale={3} />
       </div>
-      <h1 className="text-sm">Libro cerrado</h1>
+      <h1 className="text-[2.6rem]">Libro cerrado</h1>
       <div className="max-w-sm text-left">
         <SpeechBubble text={text} side="top" />
       </div>

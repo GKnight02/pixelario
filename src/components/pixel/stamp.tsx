@@ -32,11 +32,11 @@ export function Stamp({ trigger, label = "¡Guardado!" }: { trigger?: number; la
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="flex -rotate-6 items-center gap-2 border-4 border-berry bg-paper/90 px-5 py-3 font-title text-sm text-berry"
+            className="flex -rotate-3 items-center gap-2 border-4 border-cobalt bg-paper px-5 py-3 font-title text-sm text-cobalt"
             style={{ boxShadow: "4px 4px 0 0 var(--shadow)" }}
-            initial={{ y: -160, scale: 1.6, rotate: -14 }}
-            animate={{ y: 0, scale: 1, rotate: -6 }}
-            transition={{ type: "spring", stiffness: 520, damping: 16 }}
+            initial={{ y: -40, scale: 1.25, rotate: -8 }}
+            animate={{ y: 0, scale: 1, rotate: -3 }}
+            transition={{ type: "spring", duration: 0.35, bounce: 0.25 }}
           >
             <PixelIcon name="check" scale={3} />
             {label}

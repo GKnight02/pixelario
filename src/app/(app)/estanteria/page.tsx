@@ -14,17 +14,17 @@ export default async function ShelfPage() {
   if (!profile.onboarded && books.length === 0) redirect("/bienvenida");
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-sm sm:text-base">
+    <div className="flex flex-col gap-7">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <h1 className="text-[2.6rem] sm:text-[3.4rem]">
           {profile.display_name ? `Estantería de ${profile.display_name}` : "Tu estantería"}
         </h1>
         <NewBookButton />
       </div>
 
       {books.length === 0 ? (
-        <div className="pixel-border flex flex-col items-center gap-6 bg-wood p-6 sm:p-10">
-          <div className="w-full max-w-lg">
+        <div className="grout flex flex-col items-center border-[3px] border-ink">
+          <div className="w-full max-w-lg px-6 py-12">
             <Guide
               animal="owl"
               scale={4}
@@ -32,10 +32,10 @@ export default async function ShelfPage() {
               closable={false}
             />
           </div>
-          <div className="h-3 w-full bg-wood-dark" />
+          <div aria-hidden className="h-3.5 w-full bg-ledge" />
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
+        <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
           <Shelf books={books} />
           <UpcomingDates dates={upcoming} />
         </div>

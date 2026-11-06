@@ -37,16 +37,16 @@ export const RELATIONSHIPS = [
 ] as const;
 
 export const COVER_COLORS = [
-  "#8B3A3A",
-  "#B04A5A",
-  "#E0A030",
-  "#5A8F4E",
-  "#3E6E8E",
-  "#5C4A8B",
-  "#7A4E2D",
-  "#2F4F4F",
-  "#C0603A",
-  "#8E7CC3",
+  "#1D3A9E", // cobalto
+  "#0F1A4D", // cobalto profundo
+  "#E8A31A", // ocre
+  "#2F8A4E", // verde talavera
+  "#B8432F", // terracota
+  "#8E2C48", // vino
+  "#1F7A8C", // turquesa
+  "#5B4BA0", // violeta
+  "#C77D12", // miel
+  "#3B5BDB", // azul añil
 ] as const;
 
 export const CATEGORY_ICONS = [

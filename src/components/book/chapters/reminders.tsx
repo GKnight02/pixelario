@@ -145,10 +145,33 @@ function ReminderItem({
   overdue?: boolean;
 }) {
   return (
-    <li className={`pixel-border-sm p-3 ${overdue ? "bg-accent/25" : r.done_at ? "bg-paper-2 opacity-75" : "bg-paper"}`}>
-      <div className="flex flex-wrap items-start justify-between gap-2">
+    <li
+      className={`pixel-border-sm flex gap-4 p-3 sm:p-4 ${
+        r.done_at ? "bg-glaze-2 opacity-75" : "bg-[var(--field)]"
+      }`}
+    >
+      {/* bloque de fecha */}
+      <div
+        aria-hidden
+        className={`flex w-16 shrink-0 flex-col items-center justify-center border-[3px] border-ink py-1 ${
+          overdue ? "bg-ochre text-on-ochre" : "bg-glaze-2"
+        }`}
+      >
+        <span className="font-display text-[2.2rem] leading-none">
+          {new Intl.DateTimeFormat("es", { timeZone: timezone, day: "numeric" }).format(new Date(r.due_at))}
+        </span>
+        <span className="font-title text-[0.5rem] uppercase">
+          {new Intl.DateTimeFormat("es", { timeZone: timezone, month: "short" }).format(new Date(r.due_at)).replace(".", "")}
+        </span>
+      </div>
+      <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className={`font-semibold ${r.done_at ? "line-through" : ""}`}>{r.title}</p>
+          <p className={`flex flex-wrap items-center gap-2 text-[1.05rem] font-semibold ${r.done_at ? "line-through" : ""}`}>
+            {r.title}
+            {overdue ? (
+              <span className="bg-ochre px-1.5 py-0.5 font-title text-[0.5rem] text-on-ochre no-underline">vencido</span>
+            ) : null}
+          </p>
           <p className="flex flex-wrap items-center gap-x-3 text-sm text-ink-soft">
             <span className="flex items-center gap-1">
               <PixelIcon name="clock" scale={1.5} /> {formatDateTime(r.due_at, timezone)}
@@ -298,11 +321,13 @@ export function RemindersList({
           <p className="py-8 text-center text-ink-soft">No hay recordatorios.</p>
         )
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-8">
           {overdue.length > 0 ? (
             <div>
-              <h3 className="mb-2 text-[0.6rem] text-berry">Pendientes ({overdue.length})</h3>
-              <ul className="flex flex-col gap-2">
+              <h3 className="mb-3 border-b-[3px] border-ink pb-2 font-display text-[1.6rem] leading-none tracking-normal [font-size-adjust:none]">
+                Pendientes <span className="text-ink-soft">{overdue.length}</span>
+              </h3>
+              <ul className="flex flex-col gap-3">
                 {overdue.map((r) => (
                   <ReminderItem key={r.id} r={r} overdue {...common} />
                 ))}
@@ -311,8 +336,10 @@ export function RemindersList({
           ) : null}
           {upcoming.length > 0 ? (
             <div>
-              <h3 className="mb-2 text-[0.6rem] text-ink-soft">Próximos ({upcoming.length})</h3>
-              <ul className="flex flex-col gap-2">
+              <h3 className="mb-3 border-b-[3px] border-ink pb-2 font-display text-[1.6rem] leading-none tracking-normal [font-size-adjust:none]">
+                Próximos <span className="text-ink-soft">{upcoming.length}</span>
+              </h3>
+              <ul className="flex flex-col gap-3">
                 {upcoming.map((r) => (
                   <ReminderItem key={r.id} r={r} {...common} />
                 ))}
@@ -330,7 +357,7 @@ export function RemindersList({
                 <PixelIcon name={showDone ? "x" : "plus"} scale={1.5} /> Hechos ({done.length})
               </button>
               {showDone ? (
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-col gap-3">
                   {done.map((r) => (
                     <ReminderItem key={r.id} r={r} {...common} />
                   ))}

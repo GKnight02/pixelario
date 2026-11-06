@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import Link from "next/link";
 import { useActionState, useState, useTransition } from "react";
 import { giftFromPreference } from "@/lib/actions/gifts";
 import {
@@ -186,60 +187,82 @@ function PreferenceItem({
   index: number;
 }) {
   const [open, setOpen] = useState(false);
+  const reduce = useReducedMotion();
   return (
     <motion.li
-      initial={{ opacity: 0, y: 8 }}
+      initial={reduce ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: Math.min(index * 0.04, 0.4) }}
-      className="pixel-border-sm bg-paper"
+      transition={{ duration: 0.22, delay: Math.min(index * 0.03, 0.24), ease: [0.23, 1, 0.32, 1] }}
+      className="border-b-2 border-dashed border-grout last:border-b-0"
     >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex min-h-11 w-full items-center gap-3 px-3 py-2 text-left"
+        className="group flex min-h-12 w-full items-center gap-3 px-1 py-2 text-left"
       >
-        <span className="min-w-0 flex-1 font-semibold wrap-break-word">{item.title}</span>
+        <span
+          aria-hidden
+          className={`text-ink-soft transition-transform duration-200 ease-out ${open ? "rotate-90" : ""}`}
+        >
+          <PixelIcon name="right" scale={1.5} />
+        </span>
+        <span className="min-w-0 flex-1 text-[1.05rem] font-semibold wrap-break-word group-hover:text-cobalt">
+          {item.title}
+        </span>
+        {item.note ? (
+          <span aria-hidden className="text-ink-soft" title="Tiene nota">
+            <PixelIcon name="pencil" scale={1.5} />
+          </span>
+        ) : null}
         <Intensity value={item.intensity} kind={kind} />
       </button>
-      {open ? (
-        <div className="border-t-2 border-dotted border-ink/30 px-3 py-2">
-          {item.note ? <p className="whitespace-pre-line">{item.note}</p> : <p className="text-ink-soft">Sin nota.</p>}
-          {item.changed_at ? (
-            <p className="mt-1 text-sm text-ink-soft">
-              Cambió de opinión el {formatDate(item.changed_at)}.
-            </p>
-          ) : null}
-          {editable && personId && categories ? (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <SheetTrigger title="Editar" label="Editar" icon="pencil" variant="paper" size="sm">
-                {(close) => (
-                  <PreferenceForm personId={personId} kind={kind} categories={categories} item={item} onDone={close} />
-                )}
-              </SheetTrigger>
-              <form action={togglePreferenceKind}>
-                <input type="hidden" name="id" value={item.id} />
-                <input type="hidden" name="person_id" value={personId} />
-                <ActionButton icon={kind === "like" ? "skull" : "heart"}>
-                  {kind === "like" ? "Ya no le gusta" : "Ahora le gusta"}
-                </ActionButton>
-              </form>
-              {kind === "like" ? (
-                <form action={giftFromPreference}>
-                  <input type="hidden" name="preference_id" value={item.id} />
-                  <input type="hidden" name="person_id" value={personId} />
-                  <ActionButton icon="gift">Idea de regalo</ActionButton>
-                </form>
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="mb-3 ml-7 bg-glaze-2 px-4 py-3">
+              {item.note ? <p className="whitespace-pre-line">{item.note}</p> : <p className="text-ink-soft">Sin nota.</p>}
+              {item.changed_at ? (
+                <p className="mt-1 text-sm text-ink-soft">Cambió de opinión el {formatDate(item.changed_at)}.</p>
               ) : null}
-              <form action={deletePreference}>
-                <input type="hidden" name="id" value={item.id} />
-                <input type="hidden" name="person_id" value={personId} />
-                <ActionButton icon="trash" variant="berry" confirm={`¿Borrar “${item.title}”?`} title="Borrar" />
-              </form>
+              {editable && personId && categories ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <SheetTrigger title="Editar" label="Editar" icon="pencil" variant="paper" size="sm">
+                    {(close) => (
+                      <PreferenceForm personId={personId} kind={kind} categories={categories} item={item} onDone={close} />
+                    )}
+                  </SheetTrigger>
+                  <form action={togglePreferenceKind}>
+                    <input type="hidden" name="id" value={item.id} />
+                    <input type="hidden" name="person_id" value={personId} />
+                    <ActionButton icon={kind === "like" ? "skull" : "heart"}>
+                      {kind === "like" ? "Ya no le gusta" : "Ahora le gusta"}
+                    </ActionButton>
+                  </form>
+                  {kind === "like" ? (
+                    <form action={giftFromPreference}>
+                      <input type="hidden" name="preference_id" value={item.id} />
+                      <input type="hidden" name="person_id" value={personId} />
+                      <ActionButton icon="gift">Idea de regalo</ActionButton>
+                    </form>
+                  ) : null}
+                  <form action={deletePreference}>
+                    <input type="hidden" name="id" value={item.id} />
+                    <input type="hidden" name="person_id" value={personId} />
+                    <ActionButton icon="trash" variant="berry" confirm={`¿Borrar “${item.title}”?`} title="Borrar" />
+                  </form>
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-      ) : null}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.li>
   );
 }
@@ -262,12 +285,19 @@ export function PreferencesChapter({
   number?: number;
 }) {
   const [lastStamp, setLastStamp] = useState<number>();
+  const [filter, setFilter] = useState<string | null>(null);
+
   const groups = new Map<string, { icon: string; items: PreferenceView[] }>();
   for (const item of items) {
     const key = item.category_name ?? "Sin categoría";
     if (!groups.has(key)) groups.set(key, { icon: item.category_icon ?? "other", items: [] });
     groups.get(key)!.items.push(item);
   }
+  // Lo más intenso arriba dentro de cada categoría; las categorías más llenas primero.
+  for (const g of groups.values()) g.items.sort((a, b) => b.intensity - a.intensity);
+  const entries = [...groups.entries()].sort((a, b) => b[1].items.length - a[1].items.length);
+  const shown = filter ? entries.filter(([name]) => name === filter) : entries;
+  const strong = items.filter((it) => it.intensity === 3).length;
 
   const writeButton =
     editable && personId && categories ? (
@@ -290,6 +320,16 @@ export function PreferencesChapter({
       </SheetTrigger>
     ) : null;
 
+  const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  const subtitle = items.length
+    ? `${plural(items.length, "anotación", "anotaciones")} en ${plural(groups.size, "categoría", "categorías")}${
+        strong ? ` · ${strong} ${kind === "like" ? "que le encantan" : "que no soporta"}` : ""
+      }`
+    : kind === "like"
+      ? "Gustos por categoría"
+      : "Lo que mejor evitar";
+
+  let i = 0;
   return (
     <section>
       <Stamp trigger={lastStamp} />
@@ -297,12 +337,12 @@ export function PreferencesChapter({
         number={number}
         title={kind === "like" ? "Le gusta" : "No le gusta"}
         icon={kind === "like" ? "heart" : "skull"}
-        subtitle={kind === "like" ? "Gustos por categoría" : "Lo que mejor evitar"}
+        subtitle={subtitle}
         action={writeButton}
       />
 
       {firstTime && editable ? (
-        <div className="mb-5">
+        <div className="mb-6">
           <Guide
             animal="cat"
             text="¡Tu primer libro está listo! Empieza por algo que le encante: su comida favorita, una canción, un lugar…"
@@ -325,29 +365,79 @@ export function PreferencesChapter({
           <p className="py-8 text-center text-ink-soft">Este capítulo aún está en blanco.</p>
         )
       ) : (
-        <div className="flex flex-col gap-6">
-          {[...groups.entries()].map(([name, group]) => (
-            <div key={name}>
-              <h3 className="mb-2 flex items-center gap-2 text-[0.6rem] text-ink-soft">
-                <PixelIcon name={group.icon} scale={2} /> {name}
-              </h3>
-              <ul className="grid gap-2 sm:grid-cols-2">
-                {group.items.map((item, i) => (
-                  <PreferenceItem
-                    key={item.id}
-                    item={item}
-                    kind={kind}
-                    personId={personId}
-                    categories={categories}
-                    editable={editable}
-                    index={i}
-                  />
-                ))}
-              </ul>
+        <>
+          {entries.length > 1 ? (
+            <div role="group" aria-label="Filtrar por categoría" className="mb-6 flex flex-wrap gap-2">
+              {[null, ...entries.map(([name]) => name)].map((name) => {
+                const active = filter === name;
+                return (
+                  <button
+                    key={name ?? "todas"}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setFilter(name)}
+                    className={`flex min-h-9 items-center gap-1.5 border-2 px-2.5 font-title text-[0.55rem] transition-colors duration-150 ${
+                      active
+                        ? "border-cobalt bg-cobalt text-on-cobalt"
+                        : "border-ink bg-[var(--field)] text-ink hover:bg-glaze-2"
+                    }`}
+                  >
+                    {name ? <PixelIcon name={groups.get(name)!.icon} scale={1.5} /> : null}
+                    {name ?? "Todas"}
+                  </button>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          ) : null}
+
+          <div className="gap-8 sm:columns-2">
+            {shown.map(([name, group]) => (
+              <div key={name} className="mb-8 break-inside-avoid">
+                <div className="mb-1 flex items-center gap-3 border-b-[3px] border-ink pb-2">
+                  <span
+                    aria-hidden
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center ${
+                      kind === "like" ? "bg-cobalt text-on-cobalt" : "bg-ink text-paper"
+                    }`}
+                  >
+                    <PixelIcon name={group.icon} scale={2} />
+                  </span>
+                  <h3 className="flex-1 font-display text-[1.6rem] leading-none tracking-normal [font-size-adjust:none]">
+                    {name}
+                  </h3>
+                  <span className="font-display text-[1.3rem] leading-none text-ink-soft">
+                    {group.items.length}
+                  </span>
+                </div>
+                <ul>
+                  {group.items.map((item) => (
+                    <PreferenceItem
+                      key={item.id}
+                      item={item}
+                      kind={kind}
+                      personId={personId}
+                      categories={categories}
+                      editable={editable}
+                      index={i++}
+                    />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </>
       )}
+
+      {editable && personId ? (
+        <Link
+          href={`/libro/${personId}/${kind === "like" ? "disgustos" : "gustos"}`}
+          scroll={false}
+          className="mt-2 inline-flex items-center gap-2 text-ink-soft underline decoration-2 underline-offset-4 hover:text-cobalt"
+        >
+          {kind === "like" ? "¿Y lo que no le gusta?" : "Ver lo que sí le gusta"}
+          <PixelIcon name="right" scale={1.5} />
+        </Link>
+      ) : null}
     </section>
   );
 }

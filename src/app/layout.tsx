@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Pixelify_Sans, Press_Start_2P } from "next/font/google";
+import { Jersey_10, Pixelify_Sans, Silkscreen } from "next/font/google";
 import { Providers } from "@/components/layout/providers";
 import "./globals.css";
 
-const pressStart = Press_Start_2P({
-  variable: "--font-press-start",
+const jersey = Jersey_10({
+  variable: "--font-jersey",
   weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const silkscreen = Silkscreen({
+  variable: "--font-silkscreen",
+  weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -28,8 +35,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4e4c1" },
-    { media: "(prefers-color-scheme: dark)", color: "#2b2238" },
+    { media: "(prefers-color-scheme: light)", color: "#1d3a9e" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c1238" },
   ],
 };
 
@@ -42,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       data-theme="day"
       suppressHydrationWarning
-      className={`${pressStart.variable} ${pixelify.variable} h-full antialiased`}
+      className={`${jersey.variable} ${silkscreen.variable} ${pixelify.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

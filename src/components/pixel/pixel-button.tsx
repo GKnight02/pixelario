@@ -4,10 +4,10 @@ import { PixelIcon } from "./pixel-icon";
 type Variant = "primary" | "paper" | "leaf" | "berry" | "ghost";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-accent text-[#2a1a10]",
-  paper: "bg-paper text-ink",
-  leaf: "bg-leaf text-[#fdf6e3]",
-  berry: "bg-berry text-[#fdf6e3]",
+  primary: "bg-cobalt text-on-cobalt",
+  paper: "bg-[var(--field)] text-ink",
+  leaf: "bg-leaf text-on-cobalt",
+  berry: "bg-terra text-on-cobalt",
   ghost: "bg-transparent text-ink shadow-none! border-dashed",
 };
 
@@ -23,7 +23,7 @@ export function buttonClasses(variant: Variant = "paper", size: "sm" | "md" = "m
   return [
     "btn-pixel",
     VARIANTS[variant],
-    size === "sm" ? "px-2! py-1.5! min-h-[36px]! text-[0.5rem]!" : "",
+    size === "sm" ? "px-2.5! py-1.5! min-h-[38px]! text-[0.55rem]!" : "",
     extra,
   ].join(" ");
 }

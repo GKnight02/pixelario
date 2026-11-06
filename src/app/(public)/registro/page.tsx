@@ -14,7 +14,7 @@ export default function SignupPage() {
         closable={false}
       />
       <PixelCard className="p-5">
-        <h1 className="mb-5 text-sm">Crear cuenta</h1>
+        <h1 className="mb-6 text-[2.8rem]">Crear cuenta</h1>
         <SignupForm />
       </PixelCard>
     </div>

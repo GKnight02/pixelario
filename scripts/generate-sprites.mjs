@@ -30,11 +30,11 @@ const CHARACTERS = {
   owl: {
     special: "sleep",
     palette: {
-      k: "#2a1a10", b: "#8a5a3c", w: "#f4e4c1", c: "#c89a6a", y: "#e0a030",
-      E: "#2a1a10", F: "#e0a030",
+      k: "#0f1a4d", b: "#2a4bb0", w: "#f2f5fb", c: "#9fb4ee", y: "#e8a31a",
+      E: "#0f1a4d", F: "#e8a31a",
     },
-    lid: "#8a5a3c",
-    mouthClosed: "#8a5a3c",
+    lid: "#2a4bb0",
+    mouthClosed: "#2a4bb0",
     map: [
       "................",
       "..k..........k..",
@@ -57,10 +57,10 @@ const CHARACTERS = {
   cat: {
     special: "sleep",
     palette: {
-      k: "#2a1a10", o: "#e09a4a", p: "#e07a8a", w: "#f8eedd", E: "#2a1a10", F: "#f8eedd",
+      k: "#0f1a4d", o: "#e8a31a", p: "#e9788a", w: "#f2f5fb", E: "#0f1a4d", F: "#f2f5fb",
     },
-    lid: "#b0703a",
-    mouthClosed: "#e09a4a",
+    lid: "#b67a0c",
+    mouthClosed: "#e8a31a",
     map: [
       "................",
       "..kk........kk..",
@@ -83,10 +83,10 @@ const CHARACTERS = {
   fox: {
     special: "run",
     palette: {
-      k: "#2a1a10", o: "#d0602a", w: "#f8eedd", E: "#2a1a10", F: "#2a1a10", G: "#2a1a10",
+      k: "#0f1a4d", o: "#c8553d", w: "#f2f5fb", E: "#0f1a4d", F: "#0f1a4d", G: "#0f1a4d",
     },
-    lid: "#a04a20",
-    mouthClosed: "#f8eedd",
+    lid: "#943b28",
+    mouthClosed: "#f2f5fb",
     map: [
       "................",
       ".kk..........kk.",
@@ -109,10 +109,10 @@ const CHARACTERS = {
   turtle: {
     special: "walk",
     palette: {
-      k: "#1e2a14", s: "#5a8f4e", h: "#3e6a36", n: "#9acd6a", E: "#1e2a14", F: "#9acd6a", G: "#9acd6a",
+      k: "#0f1a4d", s: "#f2f5fb", h: "#1d3a9e", n: "#5fbf7d", E: "#0f1a4d", F: "#5fbf7d", G: "#5fbf7d",
     },
-    lid: "#9acd6a",
-    mouthClosed: "#9acd6a",
+    lid: "#5fbf7d",
+    mouthClosed: "#5fbf7d",
     map: [
       "................",
       "................",
@@ -135,10 +135,10 @@ const CHARACTERS = {
   rabbit: {
     special: "hop",
     palette: {
-      k: "#3a2a2a", w: "#f4f0e8", p: "#f0a0b0", E: "#3a2a2a", F: "#d8cfc2",
+      k: "#0f1a4d", w: "#f2f5fb", p: "#f0a0b0", E: "#0f1a4d", F: "#c6d0e6",
     },
-    lid: "#d8d0c8",
-    mouthClosed: "#f4f0e8",
+    lid: "#c6d0e6",
+    mouthClosed: "#f2f5fb",
     map: [
       "....kk....kk....",
       "...kwk....kwk...",
@@ -184,7 +184,7 @@ function drawFrame(sheet, sheetW, col, row, char, opts) {
       let color = null;
       if (c === ".") continue;
       if (c === "E") color = eyes === "open" ? char.palette.E : char.lid;
-      else if (c === "M") color = mouth === "open" ? "#5a1a1a" : char.mouthClosed;
+      else if (c === "M") color = mouth === "open" ? "#7a1f3d" : char.mouthClosed;
       else if (c === "F") {
         if (legs === "B") continue;
         color = char.palette.F;

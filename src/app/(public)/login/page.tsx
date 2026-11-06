@@ -11,7 +11,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
     <div className="mx-auto flex w-full max-w-md flex-col gap-6 pt-6">
       <Guide animal="owl" text="Bienvenido de vuelta. Tu estantería te está esperando." closable={false} />
       <PixelCard className="p-5">
-        <h1 className="mb-5 text-sm">Entrar</h1>
+        <h1 className="mb-6 text-[2.8rem]">Entrar</h1>
         <LoginForm next={typeof next === "string" ? next : undefined} error={typeof error === "string" ? error : undefined} />
       </PixelCard>
     </div>

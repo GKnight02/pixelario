@@ -34,22 +34,19 @@ export function Sheet({
         if (e.target === ref.current) onClose();
       }}
       aria-label={title}
-      className="m-auto max-h-[92dvh] w-[min(36rem,calc(100vw-1.5rem))] overflow-visible bg-transparent p-0 text-ink backdrop:bg-black/50"
+      className="m-auto max-h-[92dvh] w-[min(36rem,calc(100vw-1.5rem))] overflow-visible bg-transparent p-0 text-ink backdrop:bg-[#0f1a4d]/55"
     >
       {open ? (
         <motion.div
-          initial={{ y: 40, rotate: -2, opacity: 0 }}
-          animate={{ y: 0, rotate: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 380, damping: 26 }}
-          className="pixel-border paper relative max-h-[92dvh] overflow-y-auto scroll-thin p-5 pt-7"
+          initial={{ y: 16, scale: 0.98, opacity: 0 }}
+          animate={{ y: 0, scale: 1, opacity: 1 }}
+          transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+          className="pixel-border relative max-h-[92dvh] overflow-y-auto scroll-thin bg-paper p-6 pt-0"
         >
-          {/* cinta adhesiva */}
-          <span
-            aria-hidden
-            className="absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 rotate-2 bg-accent/70"
-          />
-          <div className="mb-4 flex items-start justify-between gap-3">
-            <h2 className="text-[0.75rem] sm:text-sm">{title}</h2>
+          {/* cenefa de azulejo */}
+          <div aria-hidden className="cenefa -mx-6 mb-5" />
+          <div className="mb-5 flex items-start justify-between gap-3">
+            <h2 className="text-[2rem] leading-none">{title}</h2>
             <button
               type="button"
               onClick={onClose}

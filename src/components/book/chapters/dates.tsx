@@ -175,45 +175,68 @@ export function DatesChapter({
           <p className="py-8 text-center text-ink-soft">No hay fechas anotadas.</p>
         )
       ) : (
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {items.map((d, i) => {
+        <ul className="grid gap-5 sm:grid-cols-2">
+          {[...items]
+            .sort((a, b) => (a.days ?? 9999) - (b.days ?? 9999) || a.month - b.month || a.day - b.day)
+            .map((d, i) => {
             const icon = DATE_TYPES.find((t) => t.value === d.type)?.icon ?? "calendar";
             const age = d.type === "birthday" ? turningAge(d, d.next ?? null) : null;
             const soon = typeof d.days === "number" && d.days <= 7;
+            const featured = i === 0 && typeof d.days === "number";
             return (
               <motion.li
                 key={d.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
-                className="pixel-border-sm flex flex-col bg-paper"
+                initial={{ opacity: 0, y: -10, rotateX: 25 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{ duration: 0.28, delay: Math.min(i * 0.05, 0.3), ease: [0.23, 1, 0.32, 1] }}
+                style={{ transformOrigin: "top center" }}
+                className={`pixel-border-sm flex flex-col bg-[var(--field)] ${featured ? "sm:col-span-2" : ""}`}
               >
-                <div className="flex items-start gap-3 p-3">
-                  {/* hoja de calendario */}
-                  <div className="w-16 shrink-0 border-2 border-ink text-center">
-                    <div className="bg-berry py-0.5 font-title text-[0.45rem] text-[#fdf6e3] uppercase">
+                <div className={`flex items-stretch gap-4 p-4 ${featured ? "sm:p-5" : ""}`}>
+                  {/* hoja de calendario de taco */}
+                  <div className={`flex shrink-0 flex-col border-[3px] border-ink text-center ${featured ? "w-28" : "w-20"}`}>
+                    <div aria-hidden className="flex justify-around bg-ink py-0.5">
+                      <span className="h-1.5 w-1.5 bg-paper" />
+                      <span className="h-1.5 w-1.5 bg-paper" />
+                    </div>
+                    <div className="bg-cobalt py-1 font-title text-[0.55rem] text-on-cobalt uppercase">
                       {MONTHS[d.month - 1].slice(0, 3)}
                     </div>
-                    <div className="py-1 font-title text-base">{d.day}</div>
+                    <div
+                      className={`flex flex-1 items-center justify-center font-display leading-none ${
+                        featured ? "py-2 text-[4rem]" : "py-1 text-[2.8rem]"
+                      }`}
+                    >
+                      {d.day}
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-2 font-semibold">
-                      <PixelIcon name={icon} scale={1.5} /> {d.label}
+                  <div className="flex min-w-0 flex-1 flex-col justify-center">
+                    <p className={`flex items-center gap-2 font-display leading-none ${featured ? "text-[2.2rem]" : "text-[1.6rem]"}`}>
+                      <span className="text-cobalt">
+                        <PixelIcon name={icon} scale={2} />
+                      </span>
+                      {d.label}
                     </p>
-                    <p className="text-sm text-ink-soft">
+                    <p className="mt-1.5 text-ink-soft">
                       {formatDayMonth(d.month, d.day, d.year)}
                       {d.recurring ? " · cada año" : " · única"}
+                      {age ? ` · cumple ${age}` : ""}
                     </p>
-                    {age ? <p className="text-sm">Cumple {age}</p> : null}
                     {d.days !== undefined ? (
-                      <p className={`mt-1 font-title text-[0.5rem] ${soon ? "text-berry" : "text-ink-soft"}`}>
-                        {countdownText(d.days ?? null)}
+                      <p className="mt-2">
+                        <span
+                          className={`inline-block px-2 py-0.5 font-title text-[0.55rem] ${
+                            soon ? "bg-ochre text-on-ochre" : "bg-glaze-2 text-ink"
+                          }`}
+                        >
+                          {countdownText(d.days ?? null)}
+                        </span>
                       </p>
                     ) : null}
                   </div>
                 </div>
                 {editable && personId ? (
-                  <div className="mt-auto flex gap-2 border-t-2 border-dotted border-ink/30 p-2">
+                  <div className="mt-auto flex gap-2 border-t-2 border-dashed border-grout p-2">
                     <SheetTrigger title="Editar fecha" label="Editar" icon="pencil" variant="paper" size="sm">
                       {(close) => <DateForm personId={personId} item={d} onDone={close} />}
                     </SheetTrigger>

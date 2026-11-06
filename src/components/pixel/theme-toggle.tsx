@@ -63,7 +63,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => applyTheme(night ? "day" : "night")}
-      className="pixel-border-sm flex h-11 w-11 items-end justify-center bg-paper pb-1"
+      className="pixel-border-sm flex h-10 w-10 items-end justify-center bg-[var(--field)] pb-0.5 sm:h-11 sm:w-11 sm:pb-1"
       aria-label={night ? "Apagar la vela (modo día)" : "Encender la vela (modo noche)"}
       aria-pressed={night}
       title={night ? "Modo día" : "Modo noche"}

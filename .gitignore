@@ -40,3 +40,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pruebas de navegador (pueden contener sesiones)
+.playwright-cli/
+/test-results/
+/playwright-report/
+
+# supabase cli
+supabase/.temp/
+supabase/.branches/
+
+# editores y sistema
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+
+# logs
+*.log

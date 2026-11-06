@@ -22,9 +22,9 @@ type LikeOpt = Pick<Preference, "id" | "title" | "intensity">;
 type DateOpt = Pick<ImportantDate, "id" | "label" | "month" | "day">;
 
 const STATUS_STYLE: Record<GiftStatus, string> = {
-  idea: "bg-paper-2",
-  bought: "bg-accent/40",
-  given: "bg-leaf/30",
+  idea: "bg-glaze-2",
+  bought: "bg-ochre",
+  given: "bg-leaf",
 };
 
 function formatPrice(n: number | null) {
@@ -211,27 +211,36 @@ export function GiftsChapter({
           <p className="py-8 text-center text-ink-soft">No hay ideas de regalo.</p>
         )
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className="grid gap-6 xl:grid-cols-3">
           {GIFT_STATUSES.map((status) => {
             const list = items.filter((g) => g.status === status.value);
-            if (list.length === 0) return null;
             return (
-              <div key={status.value}>
-                <h3 className="mb-2 text-[0.6rem] text-ink-soft">
-                  {status.label} ({list.length})
-                </h3>
-                <ul className="flex flex-col gap-2">
+              <div key={status.value} className="flex flex-col">
+                <div className="mb-3 flex items-center gap-2 border-b-[3px] border-ink pb-2">
+                  <span aria-hidden className={`h-4 w-4 border-2 border-ink ${STATUS_STYLE[status.value]}`} />
+                  <h3 className="flex-1 font-display text-[1.6rem] leading-none tracking-normal [font-size-adjust:none]">
+                    {status.label}
+                  </h3>
+                  <span className="font-display text-[1.3rem] leading-none text-ink-soft">{list.length}</span>
+                </div>
+                {list.length === 0 ? (
+                  <p className="border-2 border-dashed border-grout px-3 py-6 text-center text-sm text-ink-soft">
+                    {status.value === "idea" ? "Sin ideas pendientes." : status.value === "bought" ? "Nada comprado aún." : "Aún no le has regalado nada."}
+                  </p>
+                ) : null}
+                <ul className="flex flex-col gap-3">
                   {list.map((g, i) => (
                     <motion.li
                       key={g.id}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.04 }}
-                      className={`pixel-border-sm p-3 ${STATUS_STYLE[g.status]}`}
+                      layout
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.22, delay: Math.min(i * 0.04, 0.2), ease: [0.23, 1, 0.32, 1] }}
+                      className="pixel-border-sm bg-[var(--field)] p-4"
                     >
-                      <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="flex flex-col gap-3">
                         <div className="min-w-0">
-                          <p className={`font-semibold ${g.status === "given" ? "line-through decoration-2" : ""}`}>
+                          <p className={`text-[1.05rem] font-semibold ${g.status === "given" ? "line-through decoration-2" : ""}`}>
                             {g.title}
                           </p>
                           <p className="flex flex-wrap gap-x-3 text-sm text-ink-soft">
@@ -260,7 +269,7 @@ export function GiftsChapter({
                           ) : null}
                         </div>
                         {editable && personId ? (
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-1.5 border-t-2 border-dashed border-grout pt-3">
                             {g.status === "idea" ? (
                               <form action={setGiftStatus}>
                                 <input type="hidden" name="id" value={g.id} />

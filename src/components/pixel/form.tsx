@@ -14,9 +14,9 @@ export function Label({
   hint?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1 block text-sm font-semibold">
+    <label htmlFor={htmlFor} className="mb-1.5 block font-title text-[0.6rem] text-ink">
       {children}
-      {hint ? <span className="ml-1 font-normal text-ink-soft">({hint})</span> : null}
+      {hint ? <span className="ml-1 font-sans text-[0.85rem] normal-case text-ink-soft">({hint})</span> : null}
     </label>
   );
 }
@@ -35,7 +35,7 @@ export function FormMessage({ message, ok }: { message?: string; ok?: boolean })
   return (
     <p
       role="status"
-      className={`pixel-border-sm px-3 py-2 text-sm ${ok ? "bg-leaf/20" : "bg-berry/15"}`}
+      className={`border-2 px-3 py-2 text-sm ${ok ? "border-leaf bg-leaf/12" : "border-terra bg-terra/12"}`}
     >
       {message}
     </p>

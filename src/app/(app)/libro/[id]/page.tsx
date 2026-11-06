@@ -33,7 +33,7 @@ export default async function BookCoverPage({ params }: PageProps<"/libro/[id]">
 
       {/* En móvil/tablet el índice se muestra bajo la portada */}
       <section className="lg:hidden" aria-labelledby="indice">
-        <h2 id="indice" className="mb-2 text-[0.7rem]">
+        <h2 id="indice" className="mb-3 text-[2rem]">
           Índice
         </h2>
         <ChapterIndex

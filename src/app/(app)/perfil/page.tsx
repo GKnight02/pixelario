@@ -9,7 +9,7 @@ export default async function ProfilePage() {
   const [{ user }, profile] = await Promise.all([requireUser(), getProfile()]);
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-      <h1 className="text-sm">Perfil</h1>
+      <h1 className="text-[3rem]">Perfil</h1>
       <PixelCard className="p-5">
         <ProfileForm profile={profile} email={user.email ?? ""} timezones={Intl.supportedValuesOf("timeZone")} />
       </PixelCard>

@@ -4,6 +4,8 @@
 
 No es una red social: no hay feed, likes ni seguidores. Cada persona es un libro en una estantería y cada sección es un capítulo que se abre pasando páginas. Un búho, un gato, un zorro, una tortuga y un conejo acompañan al usuario.
 
+Visualmente, Pixelario es una pared de azulejos de talavera: esmalte blanco, trazo cobalto y toques de ocre. Cada persona recibe un **azulejo propio**, un patrón pixel de 8×8 con simetría de talavera que nace de su nombre y viste su lomo, su portada y su lugar en las listas.
+
 ## Stack
 
 | Capa | Tecnología |
@@ -12,22 +14,28 @@ No es una red social: no hay feed, likes ni seguidores. Cada persona es un libro
 | Base de datos | Supabase (PostgreSQL) con Row Level Security |
 | Autenticación | Supabase Auth: email + contraseña, enlace mágico y Google |
 | Archivos | Supabase Storage (bucket privado `photos`) |
-| Estilos | Tailwind CSS v4, tema día/noche con variables CSS |
-| Animaciones | Motion + sprites CSS con `steps()` |
+| Estilos | Tailwind CSS v4, tokens del tema día/noche en variables CSS (`src/app/globals.css`) |
+| Animaciones | Motion (paso de página 3D, apertura del libro) + sprites CSS con `steps()` |
 | Validación | Zod en cada Server Action |
 | Correos | Resend + React Email |
 | Tareas programadas | Vercel Cron Jobs |
 | PDF | `@react-pdf/renderer` |
-| Fuentes | Press Start 2P (títulos) y Pixelify Sans (texto) |
+| Fuentes | Jersey 10 (títulos), Silkscreen (etiquetas y botones) y Pixelify Sans (texto) |
 
 ## Funcionalidades
 
-- **Estantería** con buscador, orden por nombre, última edición o próximo cumpleaños, y panel de "Próximas fechas".
-- **Libro** con portada (avatar, relación, frase y cuenta regresiva), índice y paso de página animado: doble página en escritorio, índice desplegable en tablet y marcapáginas con swipe en móvil.
-- **Capítulos**: Le gusta / No le gusta (categorías, intensidad de 1 a 3, mover entre ambos guardando la fecha), Anécdotas (línea de tiempo por año, stickers de ánimo, hasta 4 fotos, filtro pixelado), Fechas importantes (cumpleaños sin año, recordatorios automáticos a 7 días y el mismo día), Ideas de regalo (vinculadas a gustos y fechas, sugerencias del zorro, anécdota al regalar) y Recordatorios (repetición, canales app/correo, posponer).
+- **Estantería** sobre una pared de azulejos: los libros se reacomodan en celdas enteras, con buscador y orden por nombre, última edición o próximo cumpleaños. El panel de **próxima fecha** muestra la siguiente en grande, en días, con una pista del búho hacia las ideas de regalo.
+- **Libro**: al pulsar un lomo, el libro sale de la repisa y su tapa se abre girando sobre el lomo. Dentro hay portada (avatar, relación, frase y cuenta regresiva), índice y **paso de página en 3D**: la hoja gira con anverso y reverso, y se puede pasar con las flechas, el índice, el teclado, la esquina doblada o un swipe en móvil. Se ve a doble página en escritorio, con índice desplegable en tablet y marcapáginas en móvil.
+- **Capítulos**:
+  - *Le gusta / No le gusta*: bloques por categoría a dos columnas, filtro por categoría, intensidad de 1 a 3 y paso de uno a otro guardando la fecha.
+  - *Anécdotas*: línea de tiempo por año, stickers de ánimo, hasta 4 fotos y filtro pixelado.
+  - *Fechas importantes*: hojas de calendario ordenadas por cercanía, cumpleaños sin año y recordatorios automáticos a 7 días y el mismo día.
+  - *Ideas de regalo*: tablero de tres columnas (idea, comprado, regalado), vinculadas a gustos y fechas, con sugerencias del zorro y una anécdota al regalar.
+  - *Recordatorios*: repetición, canales app/correo, posponer y aviso de vencidos.
 - **Link público** `/l/<token>` de solo lectura con capítulos elegibles, anécdotas privadas, expiración, regenerar/desactivar, contador de visitas, `noindex` e imagen Open Graph pixel.
 - **Exportar a PDF** con selección de capítulos.
-- **Modo noche con vela**, `prefers-reduced-motion`, exportación de datos en JSON y eliminación de la cuenta.
+- **Modo noche con vela**: fondo cobalto profundo y halo de luz ocre, con la vela sobre un candelero de talavera como interruptor.
+- `prefers-reduced-motion` (las animaciones se vuelven fundidos), exportación de datos en JSON y eliminación de la cuenta.
 
 ## Puesta en marcha local
 
@@ -110,9 +118,9 @@ src/
     api/                 cron/reminders, pdf/[id], export
     auth/callback/       intercambio de código OAuth / magic link
   components/
-    book/                BookShell (índice, paso de página), Cover, capítulos, SharePanel
+    book/                BookShell (apertura, índice, paso de página 3D), Cover, capítulos, SharePanel
     shelf/               Shelf, BookSpine, PersonForm, UpcomingDates
-    pixel/               PixelButton, PixelCard, Stamp, Candle, Sheet, íconos
+    pixel/               Azulejo, PixelButton, PixelCard, Stamp, Candle, Sheet, íconos
     guides/              Sprite, Guide + SpeechBubble, TurtleLoader, SleepingCat
   lib/
     supabase/            clientes de servidor, navegador, admin y proxy
@@ -128,9 +136,22 @@ supabase/migrations/     SQL de tablas, RLS y funciones
 scripts/                 generador de sprites
 ```
 
+## Sistema visual
+
+| Elemento | Detalle |
+| --- | --- |
+| Paleta | Esmalte `#f2f5fb` y cobalto `#1d3a9e` / `#0f1a4d` hacen todo el trabajo; ocre `#e8a31a`, verde `#2f8a4e` y terracota `#b8432f` solo marcan estado |
+| Noche | Fondo `#121a47`, tinta clara y luz de vela `#ffb347` |
+| Forma | Esquinas rectas, bordes de 3 px y sombras duras sin desenfoque |
+| Ornamento | La cenefa (banda de rombos cobalto) en cabecera, modales e índice |
+| Azulejo | `<Azulejo seed color />` dibuja el patrón de una persona; `<AzulejoField />` lo repite como paño en portadas y en el marco del libro |
+| Movimiento | Curva `cubic-bezier(0.23, 1, 0.32, 1)` y menos de 300 ms en la interfaz; el paso de página dura unos 600 ms |
+
+Los tokens viven en `src/app/globals.css`. Los nombres antiguos (`paper`, `ink`, `wood`…) se conservan como alias del tema.
+
 ## Personajes y sprites
 
-Cada personaje es un PNG de 128×96 px: 4 cuadros de 32×32 en 3 filas (`idle`, `talk` y un estado especial: dormir, correr, caminar o saltar). Los sprites incluidos se generan con `npm run sprites` a partir de mapas de píxeles en `scripts/generate-sprites.mjs`. Puedes reemplazarlos por arte hecho en Aseprite o Piskel manteniendo el mismo formato de hoja.
+Cada personaje es un PNG de 128×96 px: 4 cuadros de 32×32 en 3 filas (`idle`, `talk` y un estado especial: dormir, correr, caminar o saltar). Los sprites incluidos se generan con `npm run sprites` a partir de mapas de píxeles en `scripts/generate-sprites.mjs`, con la paleta de talavera: contorno cobalto, búho azul, gato ocre, zorro terracota, tortuga con caparazón de azulejo y conejo de esmalte. Puedes reemplazarlos por arte hecho en Aseprite o Piskel manteniendo el mismo formato de hoja.
 
 | Personaje | Dónde aparece |
 | --- | --- |
@@ -159,4 +180,7 @@ Cada personaje es un PNG de 128×96 px: 4 cuadros de 32×32 en 3 filas (`idle`, 
 
 ## Licencias
 
-Las fuentes Press Start 2P y Pixelify Sans se distribuyen bajo la SIL Open Font License (ver `public/fonts/OFL-*.txt`).
+Todas las fuentes se distribuyen bajo la SIL Open Font License:
+
+- **En la web:** Jersey 10, Silkscreen y Pixelify Sans, cargadas con `next/font/google`.
+- **En el PDF y la imagen Open Graph:** Press Start 2P y Pixelify Sans, incluidas como TTF en `public/fonts` (ver `public/fonts/OFL-*.txt`).

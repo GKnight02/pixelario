@@ -176,7 +176,7 @@ function AnecdoteForm({
                 type="button"
                 onClick={() => setPhotos((ps) => ps.filter((x) => x.path !== p.path))}
                 aria-label="Quitar foto"
-                className="absolute -top-2 -right-2 border-2 border-ink bg-berry p-0.5 text-[#fdf6e3]"
+                className="absolute -top-2 -right-2 border-2 border-ink bg-terra p-0.5 text-on-cobalt"
               >
                 <PixelIcon name="x" scale={1.5} />
               </button>
@@ -240,7 +240,7 @@ function AnecdoteEntry({
       className="relative pl-10"
       initial={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0)" }}
       animate={reduce ? { opacity: 1 } : { opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-      transition={{ duration: 0.5, delay: Math.min(index * 0.12, 0.8), ease: "linear" }}
+      transition={{ duration: 0.32, delay: Math.min(index * 0.06, 0.36), ease: [0.23, 1, 0.32, 1] }}
     >
       {/* sello en la línea de tiempo */}
       <span
@@ -248,7 +248,7 @@ function AnecdoteEntry({
         className="absolute top-3 left-[7px] h-5 w-5 rotate-45 border-[3px] border-ink"
         style={{ background: getMood(item.mood)?.color ?? "var(--accent)" }}
       />
-      <article className="pixel-border-sm bg-paper">
+      <article className="pixel-border-sm bg-[var(--field)]">
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
@@ -269,7 +269,7 @@ function AnecdoteEntry({
             ) : null}
           </span>
           <span className="flex flex-wrap items-center gap-2">
-            <h4 className="text-lg font-bold">{item.title}</h4>
+            <h4 className="font-display text-[1.7rem] leading-none">{item.title}</h4>
             <MoodStamp mood={item.mood} />
           </span>
           {!open && item.body ? <span className="line-clamp-2">{item.body}</span> : null}
@@ -290,7 +290,7 @@ function AnecdoteEntry({
         </button>
 
         {open ? (
-          <div className="border-t-2 border-dotted border-ink/30 p-3">
+          <div className="border-t-2 border-dashed border-grout p-3">
             {item.body ? <p className="mb-3 whitespace-pre-line">{item.body}</p> : null}
             {item.photoUrls.length > 0 ? (
               <div className="grid grid-cols-2 gap-2">
@@ -457,19 +457,22 @@ export function AnecdotesChapter({
           <p className="py-8 text-center text-ink-soft">Aún no hay recuerdos compartidos.</p>
         )
       ) : (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-10">
           {[...byYear.entries()].map(([year, list]) => (
             <div key={year} className="relative">
-              <h3 className="mb-3 inline-block -rotate-2 border-2 border-ink bg-accent px-2 py-1 text-[0.6rem] text-[#2a1a10]">
-                {year}
+              <h3 className="mb-4 flex items-baseline gap-3 font-display leading-none tracking-normal [font-size-adjust:none]">
+                <span className="text-[3rem] text-cobalt">{year}</span>
+                <span className="text-[1.2rem] text-ink-soft">
+                  {list.length} {list.length === 1 ? "recuerdo" : "recuerdos"}
+                </span>
               </h3>
               <ol className="relative flex flex-col gap-4">
                 <motion.span
                   aria-hidden
-                  className="absolute top-0 bottom-0 left-[15px] w-1 origin-top bg-ink/60"
+                  className="absolute top-0 bottom-0 left-[15px] w-1 origin-top bg-cobalt"
                   initial={{ scaleY: 0 }}
                   animate={{ scaleY: 1 }}
-                  transition={{ duration: 0.8, ease: "linear" }}
+                  transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
                 />
                 {list.map((a) => (
                   <AnecdoteEntry
